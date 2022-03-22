@@ -16,7 +16,7 @@ class CheckItems extends Migration
         Schema::create('check_items', function(Blueprint $table){
             $table->id();
             $table->string('title');
-            $table->string('detail');
+            $table->string('detail', 1000);
             $table->foreignId('event_id')->constrained('events');
         });
     }

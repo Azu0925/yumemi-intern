@@ -15,7 +15,7 @@ class Events extends Migration
     {
         Schema::create('events', function(Blueprint $table){
             $table->id();
-            $table->integer('hold_time');
+            $table->integer('hold_time')->unique();
             $table->integer('winner_id')->nullable();
             $table->date('start_date');
             $table->date('end_date');

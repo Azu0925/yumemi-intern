@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class CheckItem extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'email',
-        'password'
-    ];
 
-    
+    protected $fillable = [
+        'title',
+        'detail',
+        'event_id'
+    ];
 }
