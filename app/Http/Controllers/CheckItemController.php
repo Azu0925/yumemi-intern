@@ -45,26 +45,37 @@ class CheckItemController extends Controller
             ->get();
         
         $category_list = DB::table('category_lists')
-            ->get()
-            ->toArray();
+            ->join('categories', 'category_lists.category_id', '=', 'categories.id')
+            ->select('category_lists.id', 'category_lists.check_item_id', 'categories.name', 'categories.item')
+            ->get();
+
         $check_items = DB::table('check_items')
             ->where('event_id', '=', $event_id[0]->id)
             ->get()
             ->toArray();
 
+        $check_items_array = [];
         foreach($check_items as $item){
-             $item->category = ['hoge'];
+            $item->category_list = [];
             foreach($category_list as $category){
-                //Logger(var_dump($item->id == $category->check_item_id));
                 if($item->id == $category->check_item_id){
-                    // Logger(var_dump($item->id == $category->check_item_id));
-                    $item->category += array($category); 
+                    $item->category_list[] = [
+                        'name' => $category->name,
+                        'param' => $category->item
+                    ]; 
                 }
             }
+            $check_items_array[] = [
+                'itemId' => $item->id,
+                'title' => $item->title,
+                'detail' => $item->detail,
+                'eventId' => $item->event_id,
+                'categoryList' => $item->category_list,
+            ];
         }
         return response()->json([
             'holdTime' => $hold_time,
-            'items' => $check_items
+            'items' => $check_items_array
         ]);
     }
 
