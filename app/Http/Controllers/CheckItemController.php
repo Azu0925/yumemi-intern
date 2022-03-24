@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CheckItem;
 use CategoryLists;
+use Error;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
@@ -49,10 +51,15 @@ class CheckItemController extends Controller
             ->select('category_lists.id', 'category_lists.check_item_id', 'categories.name', 'categories.item')
             ->get();
 
-        $check_items = DB::table('check_items')
-            ->where('event_id', '=', $event_id[0]->id)
-            ->get()
-            ->toArray();
+        try {
+
+            $check_items = DB::table('check_items')
+                ->where('event_id', '=', $event_id[0]->id)
+                ->get()
+                ->toArray();
+        } catch(Exception $ex){
+            return response()->json(['message' => 'NotFound'], 404);
+        } 
 
         $check_items_array = [];
         foreach($check_items as $item){
