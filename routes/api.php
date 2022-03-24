@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckItemController;
+use App\Http\Controllers\EntryController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('register', [UserController::class, 'register']);
 
-Route::get("/event/{hold_time}/check-lists", [CheckItemController::class, 'show']);
+Route::get("/events/{hold_time}/check-lists", [CheckItemController::class, 'show']);
+
+Route::middleware('auth:api')->post('/self/events/{hold_time}/check-lists', [CheckController::class, 'create']);
+
+Route::post('/events/{hold_time}/entry', [EntryController::class, 'entry']);
 
 Route::group([
     'middleware' => 'api',

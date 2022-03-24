@@ -41,17 +41,16 @@ class CheckItemController extends Controller
      */
     public function show($hold_time)
     {
-        $event_id = DB::table('events')
-            ->select('id')
-            ->where('hold_time', '=', $hold_time)
-            ->get();
-        
-        $category_list = DB::table('category_lists')
-            ->join('categories', 'category_lists.category_id', '=', 'categories.id')
-            ->select('category_lists.id', 'category_lists.check_item_id', 'categories.name', 'categories.item')
-            ->get();
-
         try {
+            $event_id = DB::table('events')
+                ->select('id')
+                ->where('hold_time', '=', $hold_time)
+                ->get();
+            
+            $category_list = DB::table('category_lists')
+                ->join('categories', 'category_lists.category_id', '=', 'categories.id')
+                ->select('category_lists.id', 'category_lists.check_item_id', 'categories.name', 'categories.item')
+                ->get();
 
             $check_items = DB::table('check_items')
                 ->where('event_id', '=', $event_id[0]->id)
